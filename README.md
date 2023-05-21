@@ -1,14 +1,14 @@
 # advanced
-II. Virtual machines with the following parameters:
-2 Linux Virtual machines with the following parameters:
-# Machine 1:
+# II. Create 2 Linux Virtual machines with the following parameters:
+
+Machine 1:
 1. 1 CPU.
 2. 1028 MB RAM.
 3. 10 GB HDD (thin provisioned);
 4. 2 Network cards. ( Card 1 – Public Network- bridged to your host machine
 network adapter (DHCP)) (Card 2 – Private network – Static IP Address)
 
-# Machine 2:
+Machine 2:
 1. 1 CPU.
 2. 1028 MB RAM.
 3. 10 GB HDD (thin provisioned);
