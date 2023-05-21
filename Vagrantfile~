@@ -1,0 +1,82 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+
+  config.vm.define "server" do |server|
+    server.vm.box = "centos/7"  
+    server.vm.hostname = "server"
+
+    server.vm.provider 'virtualbox' do |vb|
+      vb.name = "server"
+      vb.memory = 1028
+      vb.cpus = 1
+      vb.disksize = "10GB"
+      
+      vb.customize ["modifyvm", :id, "--cpus", "1"]
+      vb.customize ["modifyvm", :id, "--vram", "16"]
+      vb.customize ["modifyvm", :id, "--ioapic", "on"]
+      vb.customize ["modifyvm", :id, "--hwvirtex", "on"]
+      vb.customize ["modifyvm", :id, "--nestedpaging", "on"]
+            
+      # Configure the first network interface (public network - bridged)
+      vb.customize ["modifyvm", :id, "--nic1", "bridged"]
+      vb.customize ["modifyvm", :id, "--nictype1", "82540EM"]
+            
+      # Configure the second network interface (private network - static IP)
+      vb.customize ["modifyvm", :id, "--nic2", "intnet"]
+      vb.customize ["modifyvm", :id, "--nictype2", "82540EM"]
+       
+      # Configure the public network interface
+      vb.network "public_network", type: "dhcp"
+      
+      # Configure the private network interface
+      vb.network "private_network", ip: "192.168.33.10"
+
+      vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+    end
+  end
+end
+   # server.vm.network "public_network", bridge: "my_bridge_network_adapter", type: "dhcp"
+'''    server.vm.network "private_network", ip: "192.168.33.10"
+  end
+  config.vm.define "client" do |client|
+    client.vm.box = "centos/7"
+    client.vm.hostname = "client"
+    
+    client.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", id:, "--cpus", "1"]
+      vb.memory = "1028"
+    end'''
+  
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  #
+  # config.vm.provider "virtualbox" do |vb|
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  # end
+  #
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   apt-get update
+  #   apt-get install -y apache2
+  # SHELL
